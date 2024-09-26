@@ -6,20 +6,19 @@ from .serializers import TokenBalanceSerializer
 
 
 
-class TokenBalanceList(APIView):
+class UserTokenBalance(APIView):
     """
-    List all token balances.
+    Retrieve the token balance for the logged-in user.
     """
-    def get(self, request, format=None):
-        balances = TokenBalance.objects.all()
-        serializer = TokenBalanceSerializer(balances, many=True)
-        return Response(serializer.data)
 
-class TokenBalanceDetail(APIView):
-    """
-    Retrieve a token balance instance.
-    """
-    def get(self, request, pk, format=None):
-        balance = get_object_or_404(TokenBalance, pk=pk)
+    def get(self, request, format=None):
+        # Ensure the user is authenticated
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=401)
+
+        # Retrieve the token balance for the authenticated user
+        balance = get_object_or_404(TokenBalance, user=request.user)
         serializer = TokenBalanceSerializer(balance)
         return Response(serializer.data)
+
+
