@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # from PIL import Image  Posiblemente si necesitamos thumbnails
+from django.db import models
 
 
 class Project(models.Model):
@@ -11,8 +12,21 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if Project.objects.exists() and not self.pk:
+            # If any instance exists, and we're trying to create another one, raise an exception
+            raise Exception("You can only create one instance of the Project model.")
+        return super(Project, self).save(*args, **kwargs)
+
+    @classmethod
+    def get_instance(cls):
+        # Returns the existing instance or creates a new one if it doesn't exist
+        instance, created = cls.objects.get_or_create(pk=1)
+        return instance
+
     def __str__(self):
         return f"{self.title} ({self.completion_percentage}%)"
+
 
 
 class ProjectMedia(models.Model):

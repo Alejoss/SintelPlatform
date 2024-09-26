@@ -8,12 +8,12 @@ from projects.serializers import ProjectSerializer, ProjectMediaSerializer
 
 
 
-class ProjectDetail(APIView):
+class ProjectView(APIView):
     """
-    Retrieve a project instance.
+    Retrieve the single project instance.
     """
-    def get(self, request, pk, format=None):
-        project = get_object_or_404(Project, pk=pk)
+    def get(self, request, format=None):
+        project = Project.get_instance()  # Always fetches the singleton instance
         serializer = ProjectSerializer(project)
         return Response(serializer.data)
 
