@@ -7,7 +7,6 @@ from projects.models import Project, ProjectMedia
 from projects.serializers import ProjectSerializer, ProjectMediaSerializer
 
 
-
 class ProjectView(APIView):
     """
     Retrieve the single project instance.

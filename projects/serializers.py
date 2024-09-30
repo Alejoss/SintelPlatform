@@ -7,6 +7,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = '__all__'
 
+
 class ProjectMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectMedia

@@ -28,7 +28,6 @@ class Project(models.Model):
         return f"{self.title} ({self.completion_percentage}%)"
 
 
-
 class ProjectMedia(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='media')
     file = models.FileField(upload_to='project_media/')
