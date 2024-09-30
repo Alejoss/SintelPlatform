@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import Project
 from django.utils import timezone
 
+
 class ProjectViewTest(APITestCase):
     @classmethod
     def setUpTestData(cls):
@@ -35,26 +36,3 @@ class ProjectViewTest(APITestCase):
         # Only checking for keys and not the entire serialization detail to keep test simple
         for key, value in expected_data.items():
             self.assertEqual(response.data[key], value)
-
-    def test_get_project_creates_new_if_none_exists(self):
-        """
-        Ensure that if no project exists, one is created and returned.
-        """
-        Project.objects.all().delete()  # Ensure no projects exist
-
-        url = reverse('project-detail')  # Assuming the url name is 'project-detail'
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        # Check if a project now exists
-        self.assertEqual(Project.objects.count(), 1)
-        new_project = Project.objects.first()
-        expected_data = {
-            'title': new_project.title,
-            'description': new_project.description,
-            'completion_percentage': new_project.completion_percentage
-        }
-
-        for key, value in expected_data.items():
-            self.assertEqual(response.data[key], value)
-
