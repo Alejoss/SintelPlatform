@@ -1,3 +1,29 @@
-.venv/
+# General
+*.log
+*.pyc
+*~
+*.bak
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Django specific
+db.sqlite3
+
+# Environment files
+.env
+
+# IDEs and editors
 .idea/
-/.env
+.venv/
+
+# Node modules
+node_modules/
+
+# Data files
+*.csv
+*.json
+
+# Docker
+docker-compose.override.yml
