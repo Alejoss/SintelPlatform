@@ -27,7 +27,7 @@ export default function Tab2() {
   }, []);
   return (
     <div className="bg-gray-800">
-      <div className="bg-gray-800 text-stone-300 px-6 md:px-12 w-full xl:px-20 mx-auto max-w-6xl">
+      <div className="bg-gray-800 text-stone-300 px-6 md:px-12 w-full xl:px-20 mx-auto max-w-6xl 2xl:max-w-screen-xl">
         <div className="text-center py-8">
           <h1 className="text-3xl md:text-4xl">Project Title</h1>
         </div>
@@ -44,6 +44,7 @@ export default function Tab2() {
         </div>
         <div className="py-6 space-y-6">
           <h1 className="text-3xl text-center md:text-4xl">Gallery</h1>
+          {/* Swiper listo para configurar con las imágenes que correspondan */}
           <Swiper
             onSwiper={(swiper) => {
               if (swiper1Ref.current !== null) {
