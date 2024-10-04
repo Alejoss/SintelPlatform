@@ -8,7 +8,7 @@ import Tab3 from "./pages/Tab3";
 function App() {
   return (
     <Router>
-      <div className="flex bg-gray-800 h-[100vh]">
+      <div className=" bg-gray-800 h-[100vh]">
         <Navbar />
         <div className="flex-1 mt-20 lg:mt-0 lg:ml-48 ">
           <Routes>
