@@ -37,10 +37,10 @@ export default function Navbar() {
         } flex flex-col p-2  bg-gray-800  transition-all duration-700  lg:justify-start`}
       >
         <button
-          className="text-white text-end  lg:hidden"
+          className="text-white text-end w-fit ml-auto  lg:hidden"
           onClick={toggleNavbar}
         >
-          <div className="w-full flex items-end justify-end p-2">
+          <div className="flex items-end justify-end p-2 w-fit ml-auto">
             <img
               src={isOpen ? close : menu}
               alt={isOpen ? "close menu" : "open menu"}

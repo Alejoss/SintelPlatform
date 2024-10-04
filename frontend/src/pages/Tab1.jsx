@@ -1,7 +1,7 @@
 import metamask from "../assets/MetaMask-Logo.png";
 export default function Tab1() {
   return (
-    <div className="bg-gray-800 text-stone-300 px-6 md:px-12">
+    <div className="bg-gray-800 text-stone-300 -mt-1 px-6 md:px-12">
       <div className="text-center py-8 text-3xl md:py-16 md:text-4xl">
         Tokens <br />
         Portafolio
