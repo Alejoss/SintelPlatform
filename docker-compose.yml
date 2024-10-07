@@ -12,15 +12,15 @@ services:
       - .env
     ports:
       - "8000:8000"
-    depends_on:
-      - postgres
+        #depends_on:
+        #- postgres
 
-  postgres:
-    image: postgres
-    env_file:
-      - .env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+        #  postgres:
+        #image: postgres
+        #env_file:
+        #- .env
+        #volumes:
+        #- postgres_data:/var/lib/postgresql/data
 
   sintel_frontend:
     build:
