@@ -19,5 +19,6 @@ EXPOSE 5173
 # Define environment variable
 ENV NODE_ENV=development
 
-# Run the app when the container launches using the Vite command
-CMD ["npm", "run", "dev"]
+
+# Run the app when the container launches using the Vite command with --host
+CMD ["npm", "run", "dev", "--", "--host"]
