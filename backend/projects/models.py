@@ -1,8 +1,11 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-# from PIL import Image  Posiblemente si necesitamos thumbnails
-from django.db import models
+from storages.backends.s3boto3 import S3Boto3Storage
+
+
+class MediaStorage(S3Boto3Storage):
+    location = 'media'
+    file_overwrite = False
+    default_acl = 'public-read'
 
 
 class Project(models.Model):
