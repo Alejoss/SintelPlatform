@@ -27,7 +27,7 @@ DEBUG = True
 DOCKER = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['*']
+CSRF_TRUSTED_ORIGINS = ["https://sintel.alejandroveintimilla.com/", "http://sintel.alejandroveintimilla.com/"]
 
 # Application definition
 
