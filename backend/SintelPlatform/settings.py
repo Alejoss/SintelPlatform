@@ -135,16 +135,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Check if running in a production environment
 
-# S3 Settings for Media Files
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
-
+STORAGES = {
+    'default': {
+        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+        'OPTIONS': {
+            'bucket_name': os.getenv('AWS_STORAGE_BUCKET_NAME'),
+            'region_name': os.getenv('AWS_S3_REGION_NAME', 'us-east-1'),
+            'default_acl': 'public-read',
+            'file_overwrite': False,
+            'custom_domain': f'{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com',
+        },
+    },
+    # Optionally configure static files storage in a similar way if needed
+}
 # django-storages configuration for media files
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-
-# else:
-#     # Media settings for development (local storage)
-#     MEDIA_URL = '/media/'
-#     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = f'https://{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com/media/'
