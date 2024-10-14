@@ -145,6 +145,12 @@ STORAGES = {
             'file_overwrite': False,
             'custom_domain': f'{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com',
         },
+    },
+    'staticfiles': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'OPTIONS': {
+            'location': STATIC_ROOT,
+        },
     }
 }
 # django-storages configuration for media files
