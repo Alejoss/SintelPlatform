@@ -25,6 +25,10 @@ SECRET_KEY = 'django-insecure-ka+#-_pxx6!abv!uv0ouc!)d=$-ur*v#cy2-d^mff&5)0&m7&!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 DOCKER = True
+# Comando para correr el docker compose en ambiente de desarrollo:
+# docker-compose -f docker-compose.dev.yml up --build
+DJANGO_PRODUCTION = os.getenv('DJANGO_PRODUCTION', 'False') == 'True'
+print(f"DJANGO_PRODUCTION: {DJANGO_PRODUCTION}")
 
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://sintel.alejandroveintimilla.com:8000", "http://sintel.alejandroveintimilla.com:8000"]
@@ -132,30 +136,34 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
 
 # Check if running in a production environment
-STORAGES = {
-    'default': {
-        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-        'OPTIONS': {
-            'bucket_name': os.getenv('AWS_STORAGE_BUCKET_NAME'),
-            'region_name': os.getenv('AWS_S3_REGION_NAME', 'us-east-1'),
-            'default_acl': 'public-read',
-            'file_overwrite': False,
-            'custom_domain': f'{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com',
+if DJANGO_PRODUCTION:
+    print("DJANGO PRODUCTION")
+    STORAGES = {
+        'default': {
+            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+            'OPTIONS': {
+                'bucket_name': os.getenv('AWS_STORAGE_BUCKET_NAME'),
+                'region_name': os.getenv('AWS_S3_REGION_NAME', 'us-east-1'),
+                'default_acl': 'public-read',
+                'file_overwrite': False,
+                'custom_domain': f'{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com',
+            },
         },
-    },
-    'staticfiles': {
-        'BACKEND': 'django.core.files.storage.FileSystemStorage',
-        'OPTIONS': {
-            'location': STATIC_ROOT,
-        },
+        'staticfiles': {
+            'BACKEND': 'django.core.files.storage.FileSystemStorage',
+            'OPTIONS': {
+                'location': STATIC_ROOT,
+            },
+        }
     }
-}
-# django-storages configuration for media files
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_URL = f'https://{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com/media/'
+    # django-storages configuration for media files
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = f'https://{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com/media/'
 
-print("STATICFILES_STORAGE: %s", STATICFILES_STORAGE)
-print("DEFAULT_FILE_STORAGE: %s", DEFAULT_FILE_STORAGE)
+else:
+    STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
