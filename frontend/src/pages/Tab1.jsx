@@ -1,4 +1,5 @@
 import metamask from "../assets/MetaMask-Logo.png";
+import Transactions from "../components/Transactions";
 export default function Tab1() {
   return (
     <div className="bg-gray-800 text-stone-300 -mt-1 px-6 md:px-12">
@@ -8,15 +9,17 @@ export default function Tab1() {
       </div>
       <div
         className="text-2xl space-y-2 py-8 flex flex-col 
-      md:flex-row md:gap-8 md:items-center md:text-5xl md:py-16"
+      md:flex-row md:flex-wrap md:items-center md:space-y-0 md:gap-4 md:justify-center md:text-5xl md:py-16"
       >
-        <h1 className="md:w-1/2 md:text-center">Project X</h1>
+        <h1 className="md:w-full md:text-center">Project X</h1>
+        <Transactions />
         {
           //Imagen de tokens que tendrá renderizado condicional según la etapa del proyecto
         }
         <img
           src="https://placehold.co/600x400/gray/FFF"
-          className="rounded-xl md:w-1/2 drop-shadow-xl shadow-lg shadow-gray-700"
+          className="rounded-xl md:w-2/5 drop-shadow-xl shadow-lg shadow-gray-700
+          h-full"
           alt=""
         />
       </div>
