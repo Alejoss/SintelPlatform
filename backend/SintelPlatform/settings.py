@@ -161,7 +161,7 @@ if DJANGO_PRODUCTION:
     }
     # django-storages configuration for media files
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f'https://{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com'
+    MEDIA_URL = f'https://{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com/media/'
 
 else:
     STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
