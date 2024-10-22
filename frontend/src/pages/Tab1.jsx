@@ -3,25 +3,28 @@ import Transactions from "../components/Transactions";
 export default function Tab1() {
   return (
     <div className="bg-gray-800 text-stone-300 -mt-1 px-6 md:px-12">
-      <div className="text-center py-8 text-3xl md:py-16 md:text-4xl">
-        Tokens <br />
-        Portafolio
+      <div
+        className="flex flex-col md:flex-row items-center justify-center py-4
+      lg:pt-16 "
+      >
+        <h1 className="text-2xl md:text-5xl md:w-full md:text-center font-bold pb-5 md:pb-0">
+          Project X
+        </h1>
+        <img
+          src="https://placehold.co/600x400/gray/FFF"
+          className="rounded-xl max-w-xs drop-shadow-xl shadow-lg shadow-gray-700
+        h-full lg:max-w-sm"
+          alt=""
+        />
       </div>
       <div
         className="text-2xl space-y-2 py-8 flex flex-col 
       md:flex-row md:flex-wrap md:items-center md:space-y-0 md:gap-4 md:justify-center md:text-5xl md:py-16"
       >
-        <h1 className="md:w-full md:text-center">Project X</h1>
         <Transactions />
         {
           //Imagen de tokens que tendrá renderizado condicional según la etapa del proyecto
         }
-        <img
-          src="https://placehold.co/600x400/gray/FFF"
-          className="rounded-xl md:w-2/5 drop-shadow-xl shadow-lg shadow-gray-700
-          h-full"
-          alt=""
-        />
       </div>
       <div
         className="text-3xl gap-4 py-8 flex justify-center items-center

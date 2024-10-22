@@ -1,8 +1,10 @@
 export default function Transactions() {
   return (
-    <div className="text-lg py-6 md:w-1/2">
-      <h1 className="text-lg font-bold lg:text-xl">Depósitos recientes</h1>
-      <p className="text-base font-semibold lg:text-lg">1500 USDT</p>
+    <div className="text-lg py-6 w-full">
+      <h1 className="text-lg font-bold lg:text-xl xl:text-2xl">
+        Depósitos recientes
+      </h1>
+      <p className="text-base font-semibold lg:text-lg xl:text-xl">1500 USDT</p>
       <div
         className="grid grid-cols-2 p-3 gap-6 bg-gray-700/50 rounded-xl my-4
       xl:grid-cols-3"
