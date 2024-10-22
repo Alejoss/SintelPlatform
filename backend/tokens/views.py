@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import TokenBalance
-from .serializers import TokenBalanceSerializer
 
+from .models import TokenBalance, TokenTransaction
+from .serializers import TokenBalanceSerializer
 
 
 class UserTokenBalance(APIView):
@@ -21,4 +21,15 @@ class UserTokenBalance(APIView):
         serializer = TokenBalanceSerializer(balance)
         return Response(serializer.data)
 
+
+class UserTransactionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        transactions = TokenTransaction.objects.filter(
+            models.Q(sender=user) | models.Q(recipient=user)
+        ).order_by('-timestamp')  # Sorting by timestamp descending
+        serializer = TokenTransactionSerializer(transactions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
