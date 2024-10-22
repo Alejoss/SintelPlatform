@@ -9,12 +9,12 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+from storages.backends.s3boto3 import S3Boto3Storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -24,9 +24,14 @@ SECRET_KEY = 'django-insecure-ka+#-_pxx6!abv!uv0ouc!)d=$-ur*v#cy2-d^mff&5)0&m7&!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+DOCKER = True
+# Comando para correr el docker compose en ambiente de desarrollo:
+# docker-compose -f docker-compose.dev.yml up --build
+DJANGO_PRODUCTION = os.getenv('DJANGO_PRODUCTION', 'False') == 'True'
+print(f"DJANGO_PRODUCTION: {DJANGO_PRODUCTION}")
 
 ALLOWED_HOSTS = ["*"]
-
+CSRF_TRUSTED_ORIGINS = ["https://sintel.alejandroveintimilla.com:8000", "http://sintel.alejandroveintimilla.com:8000"]
 
 # Application definition
 
@@ -40,7 +45,9 @@ INSTALLED_APPS = [
     'profiles',
     'tokens',
     'projects',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -74,17 +81,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'SintelPlatform.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DOCKER:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('POSTGRES_HOST'),
+            'PORT': '5432',  # default PostgreSQL port
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -104,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -116,13 +134,36 @@ USE_I18N = True
 
 USE_TZ = True
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# Check if running in a production environment
+if DJANGO_PRODUCTION:
+    print("DJANGO PRODUCTION")
+    STORAGES = {
+        'default': {
+            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+            'OPTIONS': {
+                'bucket_name': os.getenv('AWS_STORAGE_BUCKET_NAME'),
+                'region_name': os.getenv('AWS_S3_REGION_NAME', 'us-east-1'),
+                'default_acl': 'public-read',
+                'file_overwrite': False,
+                'custom_domain': f'{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com',
+            },
+        },
+        'staticfiles': {
+            'BACKEND': 'django.core.files.storage.FileSystemStorage',
+            'OPTIONS': {
+                'location': STATIC_ROOT,
+            },
+        }
+    }
+    # django-storages configuration for media files
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = f'https://{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.{os.getenv("AWS_S3_REGION_NAME", "us-east-1")}.amazonaws.com/media/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+else:
+    STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

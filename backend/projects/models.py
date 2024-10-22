@@ -1,8 +1,4 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-# from PIL import Image  Posiblemente si necesitamos thumbnails
-from django.db import models
 
 
 class Project(models.Model):
