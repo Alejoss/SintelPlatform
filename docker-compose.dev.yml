@@ -37,18 +37,17 @@ services:
     environment:
       - NODE_ENV=development
 
-  sintel_landing:
+  landing_page:
     build:
-      context: ./landing_page/
+      context: ./landing_page
       dockerfile: Dockerfile
-    container_name: sintel_landing
-    volumes:
-      - ./landing_page:/app
-      - /app/node_modules
+    container_name: landing_page
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production  # Should be 'production' for a production build
+      - NODE_ENV=production
+    depends_on:
+      - sintel_backend
 
 
 volumes:
