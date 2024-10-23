@@ -46,9 +46,10 @@ services:
       - ./landing_page:/app
       - /app/node_modules
     ports:
-      - "3000:3000"  # Expose the port for Next.js
+      - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production  # Should be 'production' for a production build
+
 
 volumes:
   postgres_data:
