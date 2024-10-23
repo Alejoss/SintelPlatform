@@ -37,6 +37,19 @@ services:
     environment:
       - NODE_ENV=development
 
+  sintel_landing:
+    build:
+      context: ./landing_page/
+      dockerfile: Dockerfile
+    container_name: sintel_landing
+    volumes:
+      - ./landing_page:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"  # Expose the port for Next.js
+    environment:
+      - NODE_ENV=development
+
 volumes:
   postgres_data:
   static_volume:
