@@ -1,4 +1,10 @@
-export default function SignIn() {
+import { useState } from "react";
+
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
   return (
     <div
       className="bg-gray-800 text-stone-300 flex justify-center items-center h-[100vh] -mt-20
@@ -8,7 +14,7 @@ export default function SignIn() {
         className=" px-6 md:px-12 space-y-8 bg-gray-700 py-16 w-11/12 mx-auto rounded-xl
       max-w-xl 2xl:max-w-3xl"
       >
-        <h1 className="text-4xl">Sign In</h1>
+        <h1 className="text-4xl">Log In</h1>
         <div>
           <label
             htmlFor="first_name"
@@ -46,7 +52,7 @@ export default function SignIn() {
             type="button"
             className="text-white shadow-gray-500 shadow-md mt-6 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300  font-semibold rounded-lg px-6 py-2 text-center"
           >
-            Sign In!
+            Log In!
           </button>
         </a>
       </div>
