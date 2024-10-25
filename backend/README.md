@@ -38,11 +38,11 @@ docker network prune
 
 Levantar servicios
 
-docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml up --build
 
 detener servicios
-docker compose -f docker-compose.dev.yml dow
+docker compose -f docker-compose.dev.yml down
 
 reconstruir servicio especifico con los nuevos cambios
 
-docker compose -f docker-compose.dev.yml up -d --build sintel_frontend
+docker compose -f docker-compose.dev.yml up --build -d sintel_frontend
