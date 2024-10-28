@@ -1,12 +1,17 @@
-Reconstruir las imágenes de Docker:
 
-docker compose build
-Reiniciar los contenedores con los nuevos cambios:
 
-docker compose up -d
+### Docker Compose local
 
-Si solo deseas reconstruir y reiniciar un servicio específico, puedes usar el siguiente comando:
-docker compose up -d --build <nombre_servicio>
+Levantar servicios
+
+docker compose -f docker-compose.dev.yml up --build
+
+detener servicios
+docker compose -f docker-compose.dev.yml down
+
+reconstruir servicio especifico con los nuevos cambios
+
+docker compose -f docker-compose.dev.yml up --build -d sintel_frontend
 
 
 
@@ -32,17 +37,3 @@ docker volume prune
 # Eliminar redes no utilizadas
 docker network prune
 
-
-
-### Docker Compose local
-
-Levantar servicios
-
-docker compose -f docker-compose.dev.yml up --build
-
-detener servicios
-docker compose -f docker-compose.dev.yml down
-
-reconstruir servicio especifico con los nuevos cambios
-
-docker compose -f docker-compose.dev.yml up --build -d sintel_frontend

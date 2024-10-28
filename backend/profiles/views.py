@@ -25,13 +25,16 @@ class Logout(APIView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class Login(APIView):
+
+    authentication_classes = []
+
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             # Redirect to set JWT token
-            return redirect('profiles:set_jwt_token')
+            return redirect('set_jwt_token')
         else:
             return Response({'error': 'Invalid credentials'}, status=401)
 
@@ -57,7 +60,7 @@ def set_jwt_token(request):
         'key': 'jwt',
         'value': access_token,
         'httponly': True,
-        'secure': False,  # Set to False if testing locally over HTTP
+        'secure': False,  # TODO Set to False if testing locally over HTTP
         'samesite': 'Lax',
         'path': '/',
         'max_age': None,  # Can specify max_age if needed
