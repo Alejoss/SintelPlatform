@@ -31,7 +31,7 @@ services:
     container_name: sintel_frontend
     volumes:
       - ./frontend:/app
-      - /app/node_modules
+      - ./frontend/node_modules:/app/node_modules
     ports:
       - "5173:5173"
     environment:
@@ -48,7 +48,6 @@ services:
       - NODE_ENV=production
     depends_on:
       - sintel_backend
-
 
 volumes:
   postgres_data:
