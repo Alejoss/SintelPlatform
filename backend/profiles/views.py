@@ -22,7 +22,10 @@ class Logout(APIView):
         response.delete_cookie('jwt')  # Delete the JWT cookie
         return response
 
-
+# {
+#   "username": "admin",
+#   "password": "admin"
+# }
 @method_decorator(csrf_exempt, name='dispatch')
 class Login(APIView):
 
@@ -30,61 +33,43 @@ class Login(APIView):
 
     def post(self, request):
         username = request.data.get('username')
+        print(f"username: {username}")
         password = request.data.get('password')
+        print(f"password: {password}")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             # Redirect to set JWT token
-            return redirect('set_jwt_token')
+            print(f"user: {user}")
+
+            print('Creating refresh and access tokens for user:', user)
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+
+            # Define the cookie attributes
+            cookie_attributes = {
+                'key': 'jwt',
+                'value': access_token,
+                'httponly': True,
+                'secure': False,  # TODO Set to False if testing locally over HTTP
+                'samesite': 'Lax',
+                'path': '/',
+                'max_age': None,  # Can specify max_age if needed
+            }
+
+            response = JsonResponse({
+                'refresh': str(refresh),
+                'access': access_token,
+            })
+
+            response.set_cookie(**cookie_attributes)
+
+            # Print all the cookie attributes
+            print("Cookie attributes:", cookie_attributes)
+            return response
+
         else:
+            print("user not in database")
             return Response({'error': 'Invalid credentials'}, status=401)
-
-
-def set_jwt_token(request):
-    user = request.user
-
-    # Debug: Check if user is authenticated
-    print('User authenticated:', user.is_authenticated)
-
-    if not user.is_authenticated:
-        print('User not authenticated, returning error.')
-        return JsonResponse({'error': 'User not authenticated'}, status=401)
-
-    # Debug: Log that the tokens are being created
-    print('Creating refresh and access tokens for user:', user)
-    refresh = RefreshToken.for_user(user)
-    access_token = str(refresh.access_token)
-
-    # Debug: Log the setting of the JWT cookie
-    # Define the cookie attributes
-    cookie_attributes = {
-        'key': 'jwt',
-        'value': access_token,
-        'httponly': True,
-        'secure': False,  # TODO Set to False if testing locally over HTTP
-        'samesite': 'Lax',
-        'path': '/',
-        'max_age': None,  # Can specify max_age if needed
-    }
-
-    # Print all the cookie attributes
-    print("Cookie attributes:", cookie_attributes)
-
-    # Set the cookie with the specified attributes
-    redirect_url = "http://localhost:5173/profiles/login_successful"
-    response = HttpResponseRedirect(redirect_url)
-    print(f'Redirecting to {redirect_url} with JWT token cookie.')
-
-    response.set_cookie(
-        cookie_attributes['key'],
-        cookie_attributes['value'],
-        httponly=cookie_attributes['httponly'],
-        secure=cookie_attributes['secure'],
-        samesite=cookie_attributes['samesite'],
-        path=cookie_attributes['path'],
-        max_age=cookie_attributes['max_age'],
-    )
-
-    return response
 
 
 class UserDetail(APIView):
