@@ -19,7 +19,7 @@ services:
       dockerfile: Dockerfile
     container_name: sintel_frontend
     ports:
-      - "3000:5173"
+      - "5173:5173"
     environment:
       - NODE_ENV=development
 
