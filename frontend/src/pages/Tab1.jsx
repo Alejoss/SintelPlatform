@@ -1,6 +1,24 @@
+import { useEffect, useState } from "react";
 import metamask from "../assets/MetaMask-Logo.png";
 import Transactions from "../components/Transactions";
+import axios from "axios";
+
 export default function Tab1() {
+  const [projectData, setProjectData] = useState({
+    title: "",
+    description: "",
+  });
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/project/")
+      .then((response) => {
+        setProjectData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching project data:", error);
+      });
+  }, []);
+
   return (
     <div className="bg-gray-800 text-stone-300 -mt-1 px-6 md:px-12">
       <div
@@ -8,7 +26,7 @@ export default function Tab1() {
       lg:pt-16 "
       >
         <h1 className="text-2xl md:text-5xl md:w-full md:text-center font-bold pb-5 md:pb-0">
-          Project X
+          {projectData.title}
         </h1>
         <img
           src="https://placehold.co/600x400/gray/FFF"
