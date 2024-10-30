@@ -1,12 +1,26 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import close from "../assets/close-2.svg";
 import menu from "../assets/menu.svg";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
+  };
+
+  const closeNavbar = () => {
+    setIsOpen(false);
+  };
+
+  const handleLogout = () => {
+    closeNavbar();
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    setTimeout(() => {
+      navigate("/login");
+    }, 500);
   };
 
   useEffect(() => {
@@ -63,6 +77,7 @@ export default function Navbar() {
               className="
                text-white cursor-pointer
                "
+              onClick={closeNavbar}
             >
               Tab 1
             </Link>
@@ -76,6 +91,7 @@ export default function Navbar() {
               to="/tab2"
               className="
                text-white cursor-pointer "
+              onClick={closeNavbar}
             >
               Tab 2
             </Link>
@@ -89,9 +105,19 @@ export default function Navbar() {
               to="/tab3"
               className="
                text-white cursor-pointer "
+              onClick={closeNavbar}
             >
               Tab 3
             </Link>
+          </li>
+          <li
+            className="w-fit hover:scale-125 
+             hover:underline 
+                hover:underline-offset-8 transition-all duration-500"
+          >
+            <button onClick={handleLogout} className="text-red-500">
+              Logout
+            </button>
           </li>
         </ul>
       </div>

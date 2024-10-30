@@ -33,7 +33,7 @@ function AppContent() {
       {showNavbar && <Navbar />}
       <div className={`flex-1 ${showNavbar ? "mt-20 lg:mt-0 lg:ml-48" : ""}`}>
         <Routes>
-          <Route path="/log-in" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Tab1 />} />
           <Route path="/tab1" element={<Tab1 />} />
           <Route path="/tab2" element={<Tab2 />} />

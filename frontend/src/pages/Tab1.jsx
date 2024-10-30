@@ -22,12 +22,17 @@ export default function Tab1() {
   return (
     <div className="bg-gray-800 text-stone-300 -mt-1 px-6 md:px-12">
       <div
-        className="flex flex-col md:flex-row items-center justify-center py-4
-      lg:pt-16 "
+        className="flex flex-col md:flex-row items-center justify-evenly py-4
+      lg:pt-16 md:gap-8"
       >
-        <h1 className="text-2xl md:text-5xl md:w-full md:text-center font-bold pb-5 md:pb-0">
-          {projectData.title}
-        </h1>
+        <div className="pb-5 md:pb-0 text-center">
+          <h1 className="text-2xl md:text-5xl md:w-full pb-1 md:pb-3 font-bold ">
+            {projectData.title}
+          </h1>
+          <p className="text-lg md:text-2xl md:w-full">
+            {projectData.description}
+          </p>
+        </div>
         <img
           src="https://placehold.co/600x400/gray/FFF"
           className="rounded-xl max-w-xs drop-shadow-xl shadow-lg shadow-gray-700
