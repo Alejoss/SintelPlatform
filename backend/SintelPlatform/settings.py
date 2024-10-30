@@ -34,6 +34,13 @@ print(f"DJANGO_PRODUCTION: {DJANGO_PRODUCTION}")
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://sintel.alejandroveintimilla.com:8000", "http://sintel.alejandroveintimilla.com:8000"]
 
+CORS_ALLOW_ALL_ORIGINS: True  # Change on production
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',  # Allow frontend running on localhost:3000
+    'http://localhost:5173',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'profiles',
     'tokens',
     'projects',
@@ -54,6 +62,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
