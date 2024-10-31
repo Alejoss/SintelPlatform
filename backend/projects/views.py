@@ -11,6 +11,8 @@ class ProjectView(APIView):
     """
     Retrieve the single project instance.
     """
+    authentication_classes = []
+
     def get(self, request, format=None):
         project = Project.get_instance()  # Always fetches the singleton instance
         serializer = ProjectSerializer(project)

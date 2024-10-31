@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -13,7 +13,7 @@ RUN npm install
 # Copy the entire landing page project to the working directory
 COPY . .
 
-# Build the Next.js application
+# Build the Next.js application for production
 RUN npm run build
 
 # Expose the port on which Next.js will run

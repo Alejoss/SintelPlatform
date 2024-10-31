@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from storages.backends.s3boto3 import S3Boto3Storage
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +34,13 @@ print(f"DJANGO_PRODUCTION: {DJANGO_PRODUCTION}")
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://sintel.alejandroveintimilla.com:8000", "http://sintel.alejandroveintimilla.com:8000"]
 
+CORS_ALLOW_ALL_ORIGINS: True  # Change on production
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',  # Allow frontend running on localhost:3000
+    'http://localhost:5173',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'profiles',
     'tokens',
     'projects',
@@ -53,12 +62,44 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+# REST Framework configuration
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'profiles.authentication.CustomAuthentication',  # Custom class for HttpOnly cookies
+#         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ),
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#     ),
+#     'DEFAULT_RENDERER_CLASSES': (
+#         'rest_framework.renderers.JSONRenderer',
+#     ),
+#     'DEFAULT_PARSER_CLASSES': (
+#         'rest_framework.parsers.JSONParser',
+#     ),
+# }
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+
+    'AUTH_COOKIE': 'jwt',  # custom
+}
 
 ROOT_URLCONF = 'SintelPlatform.urls'
 
