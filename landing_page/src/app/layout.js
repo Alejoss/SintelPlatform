@@ -10,7 +10,7 @@ const manrope = Manrope({
 
 export const metadata = {
     title: "SINTEL",
-    description: "Expertos en tokenizacion",
+    description: "Expertos en Tokenización",
 };
 
 export default function RootLayout({ children }) {
