@@ -1,21 +1,34 @@
 import { useEffect, useState } from "react";
 import metamask from "../assets/MetaMask-Logo.png";
 import Transactions from "../components/Transactions";
-import axios from "axios";
+import axios from "../axiosConfig";
 
 export default function Tab1() {
   const [projectData, setProjectData] = useState({
     title: "",
     description: "",
   });
+
+  const [transactions, setTransactions] = useState([]);
+
   useEffect(() => {
     axios
-      .get("http://localhost:8000/project/")
+      .get("/project/")
       .then((response) => {
         setProjectData(response.data);
       })
       .catch((error) => {
         console.error("Error fetching project data:", error);
+      });
+
+    axios
+      .get("/my-token-balance/")
+      .then((response) => {
+        setTransactions(response.data);
+        console.log(transactions);
+      })
+      .catch((error) => {
+        console.error("Error fetching transactions:", error);
       });
   }, []);
 
@@ -44,7 +57,7 @@ export default function Tab1() {
         className="text-2xl space-y-2 py-8 flex flex-col 
       md:flex-row md:flex-wrap md:items-center md:space-y-0 md:gap-4 md:justify-center md:text-5xl md:py-16"
       >
-        <Transactions />
+        <Transactions transactions={transactions} />
         {
           //Imagen de tokens que tendrá renderizado condicional según la etapa del proyecto
         }

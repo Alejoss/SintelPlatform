@@ -1,4 +1,4 @@
-export default function Transactions() {
+export default function Transactions({ transactions }) {
   return (
     <div className="text-lg py-6 w-full">
       <h1 className="text-lg font-bold lg:text-xl xl:text-2xl">

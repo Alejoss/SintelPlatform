@@ -10,6 +10,7 @@ import Tab2 from "./pages/Tab2";
 import Tab1 from "./pages/Tab1";
 import Tab3 from "./pages/Tab3";
 import Login from "./pages/Login";
+import PrivateRoute from "./components/PrivateRoute";
 import { useEffect, useState } from "react";
 
 function App() {
@@ -34,10 +35,38 @@ function AppContent() {
       <div className={`flex-1 ${showNavbar ? "mt-20 lg:mt-0 lg:ml-48" : ""}`}>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Tab1 />} />
-          <Route path="/tab1" element={<Tab1 />} />
-          <Route path="/tab2" element={<Tab2 />} />
-          <Route path="/tab3" element={<Tab3 />} />
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Tab1 />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tab1"
+            element={
+              <PrivateRoute>
+                <Tab1 />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tab2"
+            element={
+              <PrivateRoute>
+                <Tab2 />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tab3"
+            element={
+              <PrivateRoute>
+                <Tab3 />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </div>
     </div>
