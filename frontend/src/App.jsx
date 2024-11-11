@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import Tab2 from "./pages/Tab2";
 import Tab1 from "./pages/Tab1";
 import Tab3 from "./pages/Tab3";
-import SignIn from "./pages/SignIn";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Navbar />
         <div className="flex-1 mt-20 lg:mt-0 lg:ml-48 ">
           <Routes>
-            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Tab1 />} />
             <Route path="/tab1" element={<Tab1 />} />
             <Route path="/tab2" element={<Tab2 />} />
