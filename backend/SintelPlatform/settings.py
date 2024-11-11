@@ -32,7 +32,7 @@ DJANGO_PRODUCTION = os.getenv('DJANGO_PRODUCTION', 'False') == 'True'
 print(f"DJANGO_PRODUCTION: {DJANGO_PRODUCTION}")
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://sintel.alejandroveintimilla.com:8000", "http://sintel.alejandroveintimilla.com:8000"]
+CSRF_TRUSTED_ORIGINS = ["https://dashboard.sintel.alejandroveintimilla.com", "http://dashboard.sintel.alejandroveintimilla.com"]
 
 CORS_ALLOW_ALL_ORIGINS: True  # Change on production
 
