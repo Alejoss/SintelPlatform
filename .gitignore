@@ -136,3 +136,4 @@ cython_debug/
 
 # JetBrains IDEs
 .idea/
+/path/

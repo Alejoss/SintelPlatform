@@ -2,6 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from profiles.models import Profile
 
+admin.site.site_header = "Sintel Administration"
+admin.site.site_title = "Sintel Site Admin"
+admin.site.index_title = "Site Administration"
+
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'get_email')

@@ -32,7 +32,7 @@ DJANGO_PRODUCTION = os.getenv('DJANGO_PRODUCTION', 'False') == 'True'
 print(f"DJANGO_PRODUCTION: {DJANGO_PRODUCTION}")
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://sintel.alejandroveintimilla.com:8000", "http://sintel.alejandroveintimilla.com:8000"]
+CSRF_TRUSTED_ORIGINS = ["https://dashboard.sintel.alejandroveintimilla.com", "http://dashboard.sintel.alejandroveintimilla.com"]
 
 CORS_ALLOW_ALL_ORIGINS: True  # Change on production
 
@@ -72,21 +72,21 @@ MIDDLEWARE = [
 
 
 # REST Framework configuration
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'profiles.authentication.CustomAuthentication',  # Custom class for HttpOnly cookies
-#         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ),
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     ),
-#     'DEFAULT_PARSER_CLASSES': (
-#         'rest_framework.parsers.JSONParser',
-#     ),
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'profiles.authentication.CustomAuthentication',  # Custom class for HttpOnly cookies
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    ),
+}
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
@@ -106,8 +106,7 @@ ROOT_URLCONF = 'SintelPlatform.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -13,10 +13,24 @@ import Login from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import { useEffect, useState } from "react";
 
+
 function App() {
   return (
     <Router>
+
       <AppContent />
+      <div className=" bg-gray-800 h-[100vh]">
+        <Navbar />
+        <div className="flex-1 mt-20 lg:mt-0 lg:ml-48 ">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Tab1 />} />
+            <Route path="/tab1" element={<Tab1 />} />
+            <Route path="/tab2" element={<Tab2 />} />
+            <Route path="/tab3" element={<Tab3 />} />
+          </Routes>
+        </div>
+      </div>
     </Router>
   );
 }
