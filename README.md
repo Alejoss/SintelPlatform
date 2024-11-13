@@ -1,5 +1,8 @@
 ### Docker Compose Local
 
+# Create backend admin custom command
+docker exec -it sintel_backend python manage.py create_admin
+
 # Start services
 docker compose -f docker-compose.dev.yml up --build
 

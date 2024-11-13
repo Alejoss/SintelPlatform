@@ -34,7 +34,8 @@ print(f"DJANGO_PRODUCTION: {DJANGO_PRODUCTION}")
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://dashboard.sintel.alejandroveintimilla.com", "http://dashboard.sintel.alejandroveintimilla.com"]
 
-CORS_ALLOW_ALL_ORIGINS: True  # Change on production
+# CORS_ALLOW_ALL_ORIGINS: True  # Change on production
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # Allow frontend running on localhost:3000

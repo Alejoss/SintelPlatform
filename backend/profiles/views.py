@@ -7,8 +7,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login, authenticate, logout as django_logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
-
 from profiles.models import Profile
 from profiles.serializers import UserSerializer, ProfileSerializer
 
@@ -22,10 +22,7 @@ class Logout(APIView):
         response.delete_cookie('jwt')  # Delete the JWT cookie
         return response
 
-# {
-#   "username": "admin",
-#   "password": "admin"
-# }
+
 @method_decorator(csrf_exempt, name='dispatch')
 class Login(APIView):
 
@@ -44,14 +41,15 @@ class Login(APIView):
             print('Creating refresh and access tokens for user:', user)
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
+            secure_flag = False
 
             # Define the cookie attributes
             cookie_attributes = {
                 'key': 'jwt',
                 'value': access_token,
                 'httponly': True,
-                'secure': False,  # TODO Set to False if testing locally over HTTP
-                'samesite': 'Lax',
+                'secure': secure_flag,  # TODO Set to False if testing locally over HTTP
+                'samesite': 'None' if secure_flag else 'Lax',
                 'path': '/',
                 'max_age': None,  # Can specify max_age if needed
             }
@@ -140,3 +138,9 @@ def set_jwt_token(request):
     )
 
     return response
+
+
+@login_required
+def check_auth_status(request):
+    return JsonResponse({'isAuthenticated': True})
+
