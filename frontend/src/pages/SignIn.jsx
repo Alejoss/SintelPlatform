@@ -5,15 +5,13 @@ import { useAuth } from "../components/AuthProvider"; // Adjust the import path 
 
 export default function SignIn() {
   useEffect(() => {
-        // Call the endpoint to ensure CSRF token is set on component mount
-        axios.get('/get-csrf/').then(response => {
-            console.log('CSRF token set:', response.data);
-        }).catch(error => {
-            console.error('Error setting CSRF token:', error);
-        });
+    // Call the endpoint to ensure CSRF token is set on component mount
+    axios.get('/get-csrf/')
+      .then(response => console.log('CSRF token set:', response.data))
+      .catch(error => console.error('Error setting CSRF token:', error));
   }, []);
 
-  const { logIn } = useAuth(); // Use the hook at the top level of your component
+  const { logIn } = useAuth(); // Use the logIn function provided by AuthProvider
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,11 +22,16 @@ export default function SignIn() {
     try {
       const response = await axios.post('/login/', { username: email, password });
       console.log('Login successful:', response.data);
-      logIn(true);  // Update the authentication state
-      navigate('/tab1');  // Redirect to a protected route after login
+      logIn(true);  // Signal that the user is authenticated
+      navigate('/tab1');  // Redirect to a protected route after successful login
     } catch (error) {
-      setError(error.response.data.error);
-      console.error('Error logging in:', error.response || error);
+      if (error.response) {
+        setError(error.response.data.error || 'Unknown error occurred');
+        console.error('Error logging in:', error.response.data.error);
+      } else {
+        setError('Unable to connect to server');
+        console.error('Error logging in:', error);
+      }
     }
   };
 

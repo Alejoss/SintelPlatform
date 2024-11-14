@@ -144,6 +144,12 @@ def set_jwt_token(request):
 
 @login_required
 def check_auth_status(request):
+    # Debugging logs
+    print("Checking authentication status...")
+    print("User is authenticated:", request.user.is_authenticated)
+    print("User:", request.user)
+
+    # Return the response
     return JsonResponse({'isAuthenticated': True})
 
 

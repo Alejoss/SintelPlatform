@@ -21,7 +21,7 @@ class Project(models.Model):
         return instance
 
     def __str__(self):
-        return f"{self.title} ({self.completion_percentage}%)"
+        return f"{self.title}"
 
 
 class ProjectMedia(models.Model):
