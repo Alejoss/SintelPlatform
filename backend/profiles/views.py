@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import AllowAny
 
 from django.middleware.csrf import get_token
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
@@ -28,6 +29,7 @@ class Logout(APIView):
 class Login(APIView):
 
     authentication_classes = []
+    permission_classes = [AllowAny]
 
     def post(self, request):
         username = request.data.get('username')
@@ -56,8 +58,7 @@ class Login(APIView):
             }
 
             response = JsonResponse({
-                'refresh': str(refresh),
-                'access': access_token,
+                'message': 'Logged in successfully',
             })
 
             response.set_cookie(**cookie_attributes)

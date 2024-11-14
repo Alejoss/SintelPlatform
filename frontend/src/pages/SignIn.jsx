@@ -27,7 +27,7 @@ export default function SignIn() {
       logIn(true);  // Update the authentication state
       navigate('/tab1');  // Redirect to a protected route after login
     } catch (error) {
-      setError("Invalid credentials or network error.");
+      setError(error.response.data.error);
       console.error('Error logging in:', error.response || error);
     }
   };
