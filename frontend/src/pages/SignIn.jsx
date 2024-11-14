@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../axiosConfig"; // Ensure this is pointing to your axios instance with baseURL
 import { useAuth } from "../components/AuthProvider"; // Adjust the import path as necessary
 
 export default function SignIn() {
+  useEffect(() => {
+        // Call the endpoint to ensure CSRF token is set on component mount
+        axios.get('/get-csrf/').then(response => {
+            console.log('CSRF token set:', response.data);
+        }).catch(error => {
+            console.error('Error setting CSRF token:', error);
+        });
+  }, []);
+
   const { logIn } = useAuth(); // Use the hook at the top level of your component
   const navigate = useNavigate();
   const [email, setEmail] = useState("");

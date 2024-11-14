@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from django.middleware.csrf import get_token
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -144,3 +145,8 @@ def set_jwt_token(request):
 def check_auth_status(request):
     return JsonResponse({'isAuthenticated': True})
 
+
+def get_csrf(request):
+    # Force CSRF token to be generated and set in the cookie
+    get_token(request)
+    return JsonResponse({'detail': 'CSRF cookie set'}, status=200)
