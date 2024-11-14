@@ -137,3 +137,4 @@ cython_debug/
 # JetBrains IDEs
 .idea/
 /path/
+landing_page/node_modules/

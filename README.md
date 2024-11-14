@@ -5,6 +5,7 @@ docker exec -it sintel_backend python manage.py create_admin
 
 # Start services
 docker compose -f docker-compose.dev.yml up --build
+docker compose -f docker-compose.dev.yml up --build sintel_frontend
 
 # Stop services
 docker compose -f docker-compose.dev.yml down

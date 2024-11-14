@@ -1,15 +1,51 @@
+import { useEffect, useState } from "react";
 import metamask from "../assets/MetaMask-Logo.png";
 import Transactions from "../components/Transactions";
+import axios from "../axiosConfig";
+
 export default function Tab1() {
+  const [projectData, setProjectData] = useState({
+    title: "",
+    description: "",
+  });
+
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/project/")
+      .then((response) => {
+        setProjectData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching project data:", error);
+      });
+
+    axios
+      .get("/my-token-balance/")
+      .then((response) => {
+        setTransactions(response.data);
+        console.log(transactions);
+      })
+      .catch((error) => {
+        console.error("Error fetching transactions:", error);
+      });
+  }, []);
+
   return (
     <div className="bg-gray-800 text-stone-300 -mt-1 px-6 md:px-12">
       <div
-        className="flex flex-col md:flex-row items-center justify-center py-4
-      lg:pt-16 "
+        className="flex flex-col md:flex-row items-center justify-evenly py-4
+      lg:pt-16 md:gap-8"
       >
-        <h1 className="text-2xl md:text-5xl md:w-full md:text-center font-bold pb-5 md:pb-0">
-          Project X
-        </h1>
+        <div className="pb-5 md:pb-0 text-center">
+          <h1 className="text-2xl md:text-5xl md:w-full pb-1 md:pb-3 font-bold ">
+            {projectData.title}
+          </h1>
+          <p className="text-lg md:text-2xl md:w-full">
+            {projectData.description}
+          </p>
+        </div>
         <img
           src="https://placehold.co/600x400/gray/FFF"
           className="rounded-xl max-w-xs drop-shadow-xl shadow-lg shadow-gray-700
@@ -18,10 +54,10 @@ export default function Tab1() {
         />
       </div>
       <div
-        className="text-2xl space-y-2 py-8 flex flex-col 
+        className="text-2xl space-y-2 py-8 flex flex-col
       md:flex-row md:flex-wrap md:items-center md:space-y-0 md:gap-4 md:justify-center md:text-5xl md:py-16"
       >
-        <Transactions />
+        <Transactions transactions={transactions} />
         {
           //Imagen de tokens que tendrá renderizado condicional según la etapa del proyecto
         }
