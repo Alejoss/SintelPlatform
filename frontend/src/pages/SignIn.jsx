@@ -4,7 +4,11 @@ import axios from "../axiosConfig";
 import { useAuth } from "../components/AuthProvider";// Make sure this is your axios instance with the correct baseURL
 
 export default function SignIn() {
-  const { checkAuthStatus } = useAuth();
+  const { isAuthenticated, checkAuthStatus } = useAuth();
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     // Ensure CSRF token is set on component mount, necessary if the server uses CSRF protection for AJAX calls
@@ -16,19 +20,14 @@ export default function SignIn() {
       .catch(error => console.error('Error setting CSRF token:', error));
   }, []);
 
-useEffect(() => {
-    // Redirect if already authenticated
-    if (isAuthenticated) {
-      console.log('User is already authenticated, redirecting...');
-      navigate('/tab1'); // Redirect to a default or user-specific page
-    }
-}, [isAuthenticated, navigate]);
+  useEffect(() => {
+      // Redirect if already authenticated
+      if (isAuthenticated) {
+        console.log('User is already authenticated, redirecting...');
+        navigate('/tab1'); // Redirect to a default or user-specific page
+      }
+  }, [isAuthenticated, navigate]);
 
-
-  const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleSignIn = async (event) => {
     event.preventDefault();
