@@ -1,42 +1,55 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import { createContext, useContext, useState, useEffect } from 'react';
+import axios from "../axiosConfig";
 
-const AuthContext = createContext(null);
+// Create the AuthContext with default values
+const AuthContext = createContext({
+  isAuthenticated: false,
+  logIn: () => {},
+  logOut: () => {}
+});
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    // Check if isAuthenticated is stored in localStorage
-    const isAuth = localStorage.getItem('isAuthenticated');
-    return isAuth === 'true';  // Convert to boolean
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const logIn = useCallback((status) => {
-    setIsAuthenticated(status);
-    localStorage.setItem('isAuthenticated', status);  // Store the status in localStorage
-  }, []);
+  // Function to handle login
+  const logIn = () => {
+    console.log('Logging in: setting isAuthenticated to true.');
+    setIsAuthenticated(true);
+  };
 
-  const logOut = useCallback(() => {
+  // Function to handle logout
+  const logOut = () => {
+    console.log('Logging out: setting isAuthenticated to false.');
     setIsAuthenticated(false);
-    localStorage.removeItem('isAuthenticated');  // Clear the stored status
-    // Add any other cleanup or logout logic here, like clearing tokens
-  }, []);
+    // Perform any other logout operations, e.g., redirecting the user
+    axios.post('/logout/').then(() => {
+      console.log('Logged out: redirecting to login page.');
+      // Redirect user to login page or home page after logging out
+      window.location.href = '/login';
+    }).catch(error => {
+      console.error('Error during logout:', error);
+    });
+  };
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      axios.get('/check_auth_status/')
-        .then(response => {
-          if (response.data.isAuthenticated) {
-            logIn(true);
-          }
-        })
-        .catch(() => setIsAuthenticated(false));
-    }
-  }, [isAuthenticated, logIn]);
+  // Effect to check authentication status
+  const checkAuthStatus = () => {
+    console.log('Manually checking authentication status...');
+    axios.get('/check_auth_status/')
+      .then(response => {
+        console.log('Authentication status:', response.data.isAuthenticated);
+        setIsAuthenticated(response.data.isAuthenticated);
+      })
+      .catch(error => {
+        console.error('Error checking authentication status:', error);
+        setIsAuthenticated(false);
+      });
+  };
 
+  // Provide the context
   return (
-    <AuthContext.Provider value={{ isAuthenticated, logIn, logOut }}>
+    <AuthContext.Provider value={{ isAuthenticated, checkAuthStatus, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );

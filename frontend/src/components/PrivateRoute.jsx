@@ -1,9 +1,9 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from './AuthProvider';  // Adjust the path as necessary
+import { useAuth } from './AuthProvider';
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation();
-  const { isAuthenticated } = useAuth(); // Destructure to get isAuthenticated
+  const { isAuthenticated } = useAuth();
 
   console.log("PrivateRoute check:", isAuthenticated);
   console.log("Current Location:", location.pathname);

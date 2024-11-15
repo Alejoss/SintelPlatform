@@ -142,18 +142,17 @@ def set_jwt_token(request):
     return response
 
 
-@login_required
 def check_auth_status(request):
-    # Debugging logs
     print("Checking authentication status...")
-    print("User is authenticated:", request.user.is_authenticated)
+    is_authenticated = request.user.is_authenticated
+    print("User is authenticated:", is_authenticated)
     print("User:", request.user)
 
-    # Return the response
-    return JsonResponse({'isAuthenticated': True})
+    return JsonResponse({'isAuthenticated': is_authenticated})
 
 
 def get_csrf(request):
     # Force CSRF token to be generated and set in the cookie
+    print("GET CSRF TOKEN")
     get_token(request)
     return JsonResponse({'detail': 'CSRF cookie set'}, status=200)

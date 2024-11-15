@@ -5,6 +5,7 @@ from rest_framework import exceptions
 
 class CustomAuthentication(JWTAuthentication):
     def authenticate(self, request):
+        print("Request cookies:", request.COOKIES)  # See all cookies
         raw_token = request.COOKIES.get(settings.SIMPLE_JWT['AUTH_COOKIE']) or None
         print("Raw token from cookie:", raw_token)
 
