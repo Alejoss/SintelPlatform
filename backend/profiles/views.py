@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 
+from django.conf import settings
 from django.middleware.csrf import get_token
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
@@ -144,9 +145,14 @@ def set_jwt_token(request):
 
 def check_auth_status(request):
     print("Checking authentication status...")
-    is_authenticated = request.user.is_authenticated
+    # Check if the authentication token is in the request cookies
+    token = request.COOKIES.get(settings.SIMPLE_JWT['AUTH_COOKIE'], None)
+    print(f"token: {token}")
+    is_authenticated = request.user.is_authenticated and token is not None
+
     print("User is authenticated:", is_authenticated)
     print("User:", request.user)
+    print("Token present:", token is not None)
 
     return JsonResponse({'isAuthenticated': is_authenticated})
 
