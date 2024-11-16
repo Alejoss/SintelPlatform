@@ -63,9 +63,11 @@ class Login(APIView):
             })
 
             response.set_cookie(**cookie_attributes)
+            login(request, user)  # This actually logs the user in, attaching them to the session
 
             # Print all the cookie attributes
             print("Cookie attributes:", cookie_attributes)
+            print(f"request.user.is_authenticated: {request.user.is_authenticated}")
             return response
 
         else:

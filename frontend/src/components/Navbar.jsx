@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "../axiosConfig";
 import close from "../assets/close-2.svg";
 import menu from "../assets/menu.svg";
 
@@ -14,10 +15,17 @@ export default function Navbar() {
     setIsOpen(false);
   };
 
-  const handleLogout = () => {
-    console.log("Logging out..."); // Implement the actual logout functionality
-  };
-
+const handleLogout = () => {
+  console.log("Logging out...");
+  axios.post('/logout/')
+    .then(response => {
+      console.log(response.data.message); // Successful logout message
+      window.location.href = '/login'; // Redirect to login after logout
+    })
+    .catch(error => {
+      console.error('Logout failed:', error);
+    });
+};
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
