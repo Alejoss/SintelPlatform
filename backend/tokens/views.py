@@ -5,7 +5,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from .models import TokenBalance, TokenTransaction
+from .models import TokenBalance, TokenTransaction, Address
 from .serializers import TokenBalanceSerializer, TokenTransactionSerializer
 
 
@@ -25,18 +25,13 @@ class UserTokenBalance(APIView):
 
 
 class UserTransactionsView(APIView):
-    """
-    Retrieve all transactions where the logged-in user is either the sender or the recipient.
-    """
-    # permission_classes = [IsAuthenticated]  # Ensures the user is authenticated
-
     def get(self, request):
-        """
-        Return transactions involving the authenticated user, either as sender or recipient.
-        """
         user = request.user
+        # Retrieve all addresses associated with the user
+        addresses = Address.objects.filter(user=user).values_list('address', flat=True)
+        # Filter transactions where the user's addresses are either sender or recipient
         transactions = TokenTransaction.objects.filter(
-            Q(sender=user) | Q(recipient=user)
-        ).order_by('-timestamp')  # Sorting by timestamp descending
+            Q(sender__in=addresses) | Q(recipient__in=addresses)
+        ).order_by('-timestamp')
         serializer = TokenTransactionSerializer(transactions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

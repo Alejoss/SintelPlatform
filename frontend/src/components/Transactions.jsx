@@ -1,39 +1,71 @@
-export default function Transactions() {
+import React, { useState, useEffect } from 'react';
+import axios from '../axiosConfig';
+
+const Transactions = () => {
+  const [balance, setBalance] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    axios.get('/my-token-balance/')
+      .then(response => {
+        setBalance(response.data.balance); // Assuming the response contains a balance field
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 404) {
+          setBalance(0);  // Set balance to 0 if no balance is found
+        } else {
+          setError('Failed to fetch token balance.');  // Handle general errors
+        }
+      });
+
+    axios.get('/my-token-transaction/')
+      .then(response => {
+        setTransactions(response.data);
+      })
+      .catch(error => {
+        setError('Failed to fetch transactions.');
+      });
+  }, []);
+
   return (
     <div className="text-lg py-6 w-full">
       <h1 className="text-lg font-bold lg:text-xl xl:text-2xl">
-        Balance Total
+        Balance Total: {balance} USDT
       </h1>
-      <p className="text-base font-semibold lg:text-lg xl:text-xl">1500 USDT</p>
-      <div
-        className="grid grid-cols-2 p-3 gap-6 bg-gray-700/50 rounded-xl my-4
-      xl:grid-cols-3"
-      >
-        <div className="py-1 px-3 bg-gray-600 rounded-xl">
-          <p className="font-semibold">Fecha</p>
-          <p>10/10/2021</p>
-        </div>
-        <div className="py-2 px-3 bg-gray-600/90 rounded-xl">
-          <p className="font-semibold">Hora</p>
-          <p>10:10 am</p>
-        </div>
-        <div className="py-2 px-3 bg-gray-600 rounded-xl">
-          <p className="font-semibold">Dirección</p>
-          <p className="break-words">TJvHKzFB44a21aYeYtQjQ9JUHT1RU8a1Su</p>
-        </div>
-        <div className="py-2 px-3 bg-gray-600/90 rounded-xl">
-          <p className="font-semibold">Red Blockchain</p>
-          <p className="break-words">Ethereum</p>
-        </div>
-        <div className="py-2 px-3 bg-gray-600 rounded-xl">
-          <p className="font-semibold">Cantidad</p>
-          <p>1500 USDT</p>
-        </div>
-        <div className="py-2 px-3 bg-gray-600/90 rounded-xl">
-          <p className="font-semibold">Tipo de Transacción</p>
-          <p>Depósito</p>
-        </div>
+      {error && <p className="text-red-500">{error}</p>}
+      <div className="grid grid-cols-2 gap-6 bg-gray-700/50 rounded-xl p-3 my-4 xl:grid-cols-3">
+        {transactions.map((transaction, index) => (
+          <React.Fragment key={index}>
+            <div className="bg-gray-600 rounded-xl p-3">
+              <p className="font-semibold">Sender</p>
+              <p>{transaction.sender}</p>
+            </div>
+            <div className="bg-gray-600/90 rounded-xl p-3">
+              <p className="font-semibold">Recipient</p>
+              <p>{transaction.recipient}</p>
+            </div>
+            <div className="bg-gray-600 rounded-xl p-3">
+              <p className="font-semibold">Fecha y Hora</p>
+              <p>{new Date(transaction.timestamp).toLocaleString()}</p>
+            </div>
+            <div className="bg-gray-600 rounded-xl p-3">
+              <p className="font-semibold">Cantidad</p>
+              <p>{transaction.amount} USDT</p>
+            </div>
+            <div className="bg-gray-600/90 rounded-xl p-3">
+              <p className="font-semibold">Nota</p>
+              <p>{transaction.note || "N/A"}</p>
+            </div>
+            <div className="bg-gray-600 rounded-xl p-3">
+              <p className="font-semibold">Recibo</p>
+              <p className="break-words">{transaction.receipt || "N/A"}</p>
+            </div>
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );
-}
+};
+
+export default Transactions;
