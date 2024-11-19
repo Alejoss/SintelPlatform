@@ -49,7 +49,6 @@ services:
     depends_on:
       - sintel_backend
 
-
 volumes:
   postgres_data:
   static_volume:

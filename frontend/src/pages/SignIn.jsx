@@ -4,7 +4,7 @@ import axios from "../axiosConfig";
 import { useAuth } from "../components/AuthProvider";// Make sure this is your axios instance with the correct baseURL
 
 export default function SignIn() {
-  const { isAuthenticated, checkAuthStatus } = useAuth();
+  const { isAuthenticated} = useAuth();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,13 +15,14 @@ export default function SignIn() {
     axios.get('/get-csrf/')
       .then(response => {
         console.log('CSRF token set:', response.data);
-        checkAuthStatus(); // Check authentication status after CSRF token is ensured
       })
       .catch(error => console.error('Error setting CSRF token:', error));
   }, []);
 
   useEffect(() => {
+      // TODO esto se manda un refresh despues de un mal login y no deja ver el mensaje de error
       // Redirect if already authenticated
+      console.log("Check Auth Status:")
       if (isAuthenticated) {
         console.log('User is already authenticated, redirecting...');
         navigate('/tab1'); // Redirect to a default or user-specific page

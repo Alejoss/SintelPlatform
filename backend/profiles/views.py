@@ -145,18 +145,12 @@ def set_jwt_token(request):
     return response
 
 
-def check_auth_status(request):
-    print("Checking authentication status...")
-    # Check if the authentication token is in the request cookies
-    token = request.COOKIES.get(settings.SIMPLE_JWT['AUTH_COOKIE'], None)
-    print(f"token: {token}")
-    is_authenticated = request.user.is_authenticated and token is not None
-
-    print("User is authenticated:", is_authenticated)
-    print("User:", request.user)
-    print("Token present:", token is not None)
-
-    return JsonResponse({'isAuthenticated': is_authenticated})
+def get_profile_data(request):
+    # TODO convertir a APIView de restframework para que utilice jwt
+    print("Getting profile data...")
+    user_serialized = UserSerializer(request.user)
+    print("User serialized:", user_serialized)
+    return JsonResponse(user_serialized.data)
 
 
 def get_csrf(request):
