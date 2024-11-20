@@ -1,24 +1,21 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from "../axiosConfig";
 
-// Create the AuthContext with default values
 const AuthContext = createContext({
   user: null,
-  isAuthenticated: false,
   logIn: () => {},
-  logOut: () => {}
+  logOut: () => {},
+  checkAuthStatus: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);  // Initializes user state as null
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
   // Function to handle login
   const logIn = (userData) => {
-    console.log('Logging in: setting isAuthenticated to true.');
-    setIsAuthenticated(true);
+    console.log('Logging in: setting user.');
     setUser(userData);  // Set the user state with the fetched user data
   };
 
@@ -26,8 +23,7 @@ export const AuthProvider = ({ children }) => {
   const logOut = () => {
     console.log('Attempting to log out...');
     axios.post('/logout/').then(() => {
-      console.log('Logged out: setting isAuthenticated to false and redirecting to login page.');
-      setIsAuthenticated(false);
+      console.log('Logged out: setting user to null and redirecting to login page.');
       setUser(null);
       window.location.href = '/login';
     }).catch(error => {
@@ -35,25 +31,23 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  // Effect to check authentication status on mount
-  useEffect(() => {
+  // Function to manually check authentication status
+  const checkAuthStatus = async () => {
     console.log('Manually checking authentication status...');
-    axios.get('/get_profile_data/')
-      .then(response => {
-        console.log('Profile data retrieved:', response.data);
-        setIsAuthenticated(true);
-        setUser(response.data);  // Set user data upon successful fetch
-      })
-      .catch(error => {
-        console.error('Error fetching profile data:', error);
-        setIsAuthenticated(false);
-        setUser(null);
-      });
-  }, []);
+    try {
+      const response = await axios.get('/get_profile_data/');
+      console.log('Profile data retrieved:', response.data);
+      setUser(response.data);
+      return true;
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+      setUser(null);
+      return false;
+    }
+  };
 
-  // Provide the context
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, logIn, logOut }}>
+    <AuthContext.Provider value={{ user, logIn, logOut, checkAuthStatus }}>
       {children}
     </AuthContext.Provider>
   );

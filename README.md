@@ -1,6 +1,7 @@
 ### Docker Compose Local
 
 # Create the database tables
+docker exec -it sintel_backend python manage.py makemigrations
 docker exec -it sintel_backend python manage.py migrate
 
 # Create backend admin custom command

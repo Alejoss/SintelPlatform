@@ -15,16 +15,5 @@ instance.interceptors.request.use((config) => {
   }
   return config;
 });
-
-// Set up a response interceptor to handle 401 errors globally
-instance.interceptors.response.use(
-  (response) => response, // Pass through successful responses
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      window.location.href = "/login"; // Redirect to login page on 401 Unauthorized
-    }
-    return Promise.reject(error);
-  }
-);
-
+  // TODO Probably an axios interceptor should logout the user if 401
 export default instance;

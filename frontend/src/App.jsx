@@ -19,11 +19,11 @@ function App() {
 }
 
 function AppContent() {
-  const { isAuthenticated } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="bg-gray-800 h-[100vh]">
-      {isAuthenticated && <Navbar />}
+      {user && <Navbar />}
       <div className="flex-1 mt-20 lg:mt-0 lg:ml-48 ">
         <Routes>
           <Route path="/login" element={<Signin />} />

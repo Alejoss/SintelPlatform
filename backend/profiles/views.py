@@ -145,12 +145,16 @@ def set_jwt_token(request):
     return response
 
 
-def get_profile_data(request):
-    # TODO convertir a APIView de restframework para que utilice jwt
-    print("Getting profile data...")
-    user_serialized = UserSerializer(request.user)
-    print("User serialized:", user_serialized)
-    return JsonResponse(user_serialized.data)
+class GetProfileData(APIView):
+    # permission_classes = [IsAuthenticated]  # This ensures only authenticated users can access this view
+
+    def get(self, request):
+        """
+        Retrieve and serialize the user data.
+        """
+        user = request.user
+        user_serialized = UserSerializer(user)
+        return Response(user_serialized.data)
 
 
 def get_csrf(request):

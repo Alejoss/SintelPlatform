@@ -27,11 +27,11 @@ class UserTokenBalance(APIView):
 class UserTransactionsView(APIView):
     def get(self, request):
         user = request.user
-        # Retrieve all addresses associated with the user
-        addresses = Address.objects.filter(user=user).values_list('address', flat=True)
+        # Retrieve all address IDs associated with the user
+        address_ids = Address.objects.filter(user=user).values_list('id', flat=True)
         # Filter transactions where the user's addresses are either sender or recipient
         transactions = TokenTransaction.objects.filter(
-            Q(sender__in=addresses) | Q(recipient__in=addresses)
+            Q(sender__in=address_ids) | Q(recipient__in=address_ids)
         ).order_by('-timestamp')
         serializer = TokenTransactionSerializer(transactions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

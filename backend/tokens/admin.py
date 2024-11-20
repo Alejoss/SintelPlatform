@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from tokens.models import TokenBalance, TokenTransaction
+from tokens.models import TokenBalance, TokenTransaction, Address
 
 
 class TokenBalanceAdmin(admin.ModelAdmin):
@@ -15,5 +15,11 @@ class TokenTransactionAdmin(admin.ModelAdmin):
     readonly_fields = ('timestamp',)
 
 
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ('user', 'address')
+    search_fields = ('user__username', 'address')
+
+
+admin.site.register(Address, AddressAdmin)
 admin.site.register(TokenBalance, TokenBalanceAdmin)
 admin.site.register(TokenTransaction, TokenTransactionAdmin)

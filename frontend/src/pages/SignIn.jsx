@@ -1,47 +1,60 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../axiosConfig";
-import { useAuth } from "../components/AuthProvider";// Make sure this is your axios instance with the correct baseURL
+import { useAuth } from "../components/AuthProvider";
 
 export default function SignIn() {
-  const { isAuthenticated} = useAuth();
+  const { checkAuthStatus } = useAuth();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Ensure CSRF token is set on component mount, necessary if the server uses CSRF protection for AJAX calls
-    axios.get('/get-csrf/')
-      .then(response => {
-        console.log('CSRF token set:', response.data);
+    axios.get("/get-csrf/")
+      .then((response) => {
+        console.log("CSRF token set:", response.data);
       })
-      .catch(error => console.error('Error setting CSRF token:', error));
+      .catch((error) => console.error("Error setting CSRF token:", error));
   }, []);
 
   useEffect(() => {
-      // TODO esto se manda un refresh despues de un mal login y no deja ver el mensaje de error
-      // Redirect if already authenticated
-      console.log("Check Auth Status:")
-      if (isAuthenticated) {
-        console.log('User is already authenticated, redirecting...');
-        navigate('/tab1'); // Redirect to a default or user-specific page
-      }
-  }, [isAuthenticated, navigate]);
-
+    // Check authentication status on mount
+    console.log("Check Auth Status!!! :");
+    checkAuthStatus()
+      .then((isAuthenticated) => {
+        if (isAuthenticated) {
+          console.log("User is already authenticated, redirecting...");
+          navigate("/tab1");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during auth status check:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []); // Empty dependency array to only run on mount
 
   const handleSignIn = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/login/', { username, password });
-      console.log('Login successful:', response.data);
-      navigate('/tab1'); // Redirect to a protected route after successful login
+      const response = await axios.post("/login/", { username, password });
+      console.log("Login successful:", response.data);
+      navigate("/tab1");
     } catch (error) {
-      const errorMessage = error.response ? error.response.data.error : 'Unable to connect to the server';
+      const errorMessage = error.response
+        ? error.response.data.error
+        : "Unable to connect to the server";
       setError(errorMessage);
-      console.error('Error logging in:', errorMessage);
+      console.error("Error logging in:", errorMessage);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-gray-800 text-stone-300 flex justify-center items-center h-[100vh]">

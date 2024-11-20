@@ -7,11 +7,14 @@ const Transactions = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get('/my-token-balance/')
+    // Fetch token balance
+    axios.get('/my_token_balance/')
       .then(response => {
+        console.log('Token Balance Response:', response.data);  // Debug log
         setBalance(response.data.balance); // Assuming the response contains a balance field
       })
       .catch(error => {
+        console.error('Token Balance Error:', error);  // Debug log
         if (error.response && error.response.status === 404) {
           setBalance(0);  // Set balance to 0 if no balance is found
         } else {
@@ -19,14 +22,21 @@ const Transactions = () => {
         }
       });
 
-    axios.get('/my-token-transaction/')
+    // Fetch token transactions
+    axios.get('/my_token_transactions/')
       .then(response => {
+        console.log('Token Transactions Response:', response.data);  // Debug log
         setTransactions(response.data);
       })
       .catch(error => {
+        console.error('Token Transactions Error:', error);  // Debug log
         setError('Failed to fetch transactions.');
       });
   }, []);
+
+  const formatAddress = (address) => {
+    return address.slice(0, 8) + '......' + address.slice(-6);
+  };
 
   return (
     <div className="text-lg py-6 w-full">
@@ -36,14 +46,15 @@ const Transactions = () => {
       {error && <p className="text-red-500">{error}</p>}
       <div className="grid grid-cols-2 gap-6 bg-gray-700/50 rounded-xl p-3 my-4 xl:grid-cols-3">
         {transactions.map((transaction, index) => (
-          <React.Fragment key={index}>
-            <div className="bg-gray-600 rounded-xl p-3">
-              <p className="font-semibold">Sender</p>
-              <p>{transaction.sender}</p>
-            </div>
-            <div className="bg-gray-600/90 rounded-xl p-3">
-              <p className="font-semibold">Recipient</p>
-              <p>{transaction.recipient}</p>
+            <React.Fragment key={index}>
+                <div className="bg-gray-600 rounded-xl p-3">
+                    <p className="font-semibold">Remitente</p>
+                    <p>{formatAddress(transaction.sender.address)}</p>
+                </div>
+                <div className="bg-gray-600/90 rounded-xl p-3">
+                    <p className="font-semibold">Beneficiario</p>
+                    <p>{formatAddress(transaction.sender.address)}
+                </p>
             </div>
             <div className="bg-gray-600 rounded-xl p-3">
               <p className="font-semibold">Fecha y Hora</p>
