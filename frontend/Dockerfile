@@ -13,12 +13,11 @@ RUN npm install
 # Bundle app source inside Docker image
 COPY . .
 
-# Make port 3000 available to the world outside this container
+# Make port 5173 available to the outside world
 EXPOSE 5173
 
 # Define environment variable
 ENV NODE_ENV=development
-
 
 # Run the app when the container launches using the Vite command with --host
 CMD ["npm", "run", "dev", "--", "--host"]
