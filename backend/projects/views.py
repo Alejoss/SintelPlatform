@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 
 from django.shortcuts import get_object_or_404
 
@@ -18,17 +19,11 @@ class ProjectView(APIView):
         return Response(serializer.data)
 
 
-class ProjectMediaView(APIView):
-    """
-    Retrieve all media related to a specific project.
-    """
-    def get(self, request, project_id, format=None):
-        # First, ensure the project exists
-        get_object_or_404(Project, pk=project_id)
-        # Retrieve all media related to the project
-        media = ProjectMedia.objects.filter(project_id=project_id)
+class ProjectMediaListView(APIView):
+    def get(self, request):
+        media = ProjectMedia.objects.all()
         serializer = ProjectMediaSerializer(media, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ProjectMediaDetail(APIView):

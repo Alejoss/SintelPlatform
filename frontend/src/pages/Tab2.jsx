@@ -6,8 +6,9 @@ import {
   FreeMode,
   Controller,
 } from "swiper/modules";
+import axios from "../axiosConfig";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -20,11 +21,27 @@ export default function Tab2() {
   const [secondSwiper, setSecondSwiper] = useState();
   const swiper1Ref = useRef(null);
   const swiper2Ref = useRef();
+  const [galleryImages, setGalleryImages] = useState([]);
+
   useLayoutEffect(() => {
     if (swiper1Ref.current !== null) {
       swiper1Ref.current.controller.control = swiper2Ref.current;
     }
   }, []);
+
+  useEffect(() => {
+    // Fetch gallery images from the API
+    axios.get("/project_media/") // Replace with the actual endpoint
+      .then(response => {
+        console.log("IMAGES RESPONSE:")
+        console.log(response.data)
+        setGalleryImages(response.data.filter(media => media.file_type === "image"));
+      })
+      .catch(error => {
+        console.error("Failed to fetch gallery images:", error);
+      });
+  }, []);
+
   return (
     <div className="bg-gray-800">
       <div className="bg-gray-800 text-stone-300 px-6 md:px-12 w-full xl:px-20 mx-auto max-w-6xl 2xl:max-w-screen-xl">
@@ -44,7 +61,19 @@ export default function Tab2() {
         </div>
         <div className="py-6 space-y-6">
           <h1 className="text-3xl text-center md:text-4xl">Gallery</h1>
-          {/* Swiper listo para configurar con las imágenes que correspondan */}
+
+          {/* Display a single image for debugging */}
+          {galleryImages.length > 0 && (
+            <div className="text-center mb-6">
+              <img
+                src={galleryImages[0].file}
+                alt="Debug Image"
+                className="rounded-lg w-full"
+              />
+            </div>
+          )}
+
+          {/* Swiper to display gallery images */}
           <Swiper
             onSwiper={(swiper) => {
               if (swiper1Ref.current !== null) {
@@ -70,55 +99,15 @@ export default function Tab2() {
               1280: { slidesPerView: 1.2 },
             }}
           >
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=One"
-                alt="Slide 1"
-                className="rounded-lg w-full"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Two"
-                alt="Slide 2"
-                className="rounded-lg w-full"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Three"
-                alt="Slide 2"
-                className="rounded-lg w-full"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Four"
-                alt="Slide 2"
-                className="rounded-lg w-full"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Five"
-                alt="Slide 2"
-                className="rounded-lg w-full"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Six"
-                alt="Slide 2"
-                className="rounded-lg w-full"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Seven"
-                alt="Slide 2"
-                className="rounded-lg w-full"
-              />
-            </SwiperSlide>
+            {galleryImages.map((image, index) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={image.file}
+                  alt={`Slide ${index + 1}`}
+                  className="rounded-lg w-full"
+                />
+              </SwiperSlide>
+            ))}
           </Swiper>
           <Swiper
             controller={{ control: firstSwiper }}
@@ -136,55 +125,15 @@ export default function Tab2() {
               1280: { slidesPerView: 6 },
             }}
           >
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=One"
-                alt="Slide 1"
-                className="rounded-lg"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Two"
-                alt="Slide 2"
-                className="rounded-lg"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Three"
-                alt="Slide 2"
-                className="rounded-lg"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Four"
-                alt="Slide 2"
-                className="rounded-lg"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Five"
-                alt="Slide 2"
-                className="rounded-lg"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Six"
-                alt="Slide 2"
-                className="rounded-lg"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://placehold.co/600x400/gray/FFF?text=Seven"
-                alt="Slide 2"
-                className="rounded-lg"
-              />
-            </SwiperSlide>
+            {galleryImages.map((image, index) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={image.file}
+                  alt={`Thumbnail ${index + 1}`}
+                  className="rounded-lg"
+                />
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
         <div className="py-6 pb-16 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-center">
