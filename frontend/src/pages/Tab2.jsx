@@ -78,7 +78,7 @@ export default function Tab2() {
         navigation={true}
         draggable={true}
         centeredSlides={true}
-        loop={true}
+        loop={false}
         thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
