@@ -10,7 +10,10 @@ class ProjectMediaSerializer(serializers.ModelSerializer):
         fields = ['id', 'project', 'file_url', 'file_type', 'thumbnail']
 
     def get_file_url(self, obj):
-        return obj.file.url if obj.file else None
+        request = self.context.get('request')
+        if request is not None:
+            return request.build_absolute_uri(obj.file.url)
+        return obj.file.url
 
 
 class ProjectSerializer(serializers.ModelSerializer):

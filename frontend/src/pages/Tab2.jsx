@@ -59,83 +59,75 @@ export default function Tab2() {
             corporis consequuntur ex cum aliquam quisquam.
           </p>
         </div>
+
         <div className="py-6 space-y-6">
           <h1 className="text-3xl text-center md:text-4xl">Gallery</h1>
 
-          {/* Display a single image for debugging */}
-          {galleryImages.length > 0 && (
-            <div className="text-center mb-6">
-              <img
-                src={galleryImages[0].file}
-                alt="Debug Image"
-                className="rounded-lg w-full"
-              />
-            </div>
-          )}
+      {/* Swiper to display gallery images */}
+      <Swiper
+        onSwiper={(swiper) => {
+          if (swiper1Ref.current !== null) {
+            swiper1Ref.current = swiper;
+          }
+        }}
+        preloadImages={false}
+        controller={{ control: secondSwiper }}
+        spaceBetween={10}
+        slidesPerView={1}
+        grabCursor={true}
+        navigation={true}
+        draggable={true}
+        centeredSlides={true}
+        loop={true}
+        thumbs={{
+          swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+        }}
+        modules={[FreeMode, Navigation, Thumbs, Controller]}
+        breakpoints={{
+          768: { slidesPerView: 1.2 },
+          1280: { slidesPerView: 1.2 },
+        }}
+      >
+        {galleryImages.map((image, index) => (
+          <SwiperSlide key={index}>
+            <img
+              src={image.file_url}
+              alt={`Slide ${index + 1}`}
+              className="rounded-lg w-full"
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-          {/* Swiper to display gallery images */}
-          <Swiper
-            onSwiper={(swiper) => {
-              if (swiper1Ref.current !== null) {
-                swiper1Ref.current = swiper;
-              }
-            }}
-            preloadImages={false}
-            controller={{ control: secondSwiper }}
-            spaceBetween={10}
-            slidesPerView={1}
-            grabCursor={true}
-            navigation={true}
-            draggable={true}
-            centeredSlides={true}
-            loop={true}
-            thumbs={{
-              swiper:
-                thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
-            }}
-            modules={[FreeMode, Navigation, Thumbs, Controller]}
-            breakpoints={{
-              768: { slidesPerView: 1.2 },
-              1280: { slidesPerView: 1.2 },
-            }}
-          >
-            {galleryImages.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={image.file}
-                  alt={`Slide ${index + 1}`}
-                  className="rounded-lg w-full"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <Swiper
-            controller={{ control: firstSwiper }}
-            loop={false}
-            spaceBetween={10}
-            slidesPerView={3}
-            watchSlidesProgress
-            touchRatio={0.2}
-            grabCursor={true}
-            slideToClickedSlide={true}
-            onSwiper={setThumbsSwiper}
-            modules={[Navigation, Thumbs, Controller]}
-            breakpoints={{
-              640: { slidesPerView: 4 },
-              1280: { slidesPerView: 6 },
-            }}
-          >
-            {galleryImages.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={image.file}
-                  alt={`Thumbnail ${index + 1}`}
-                  className="rounded-lg"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+      {/* Swiper for thumbnails */}
+      <Swiper
+        controller={{ control: firstSwiper }}
+        loop={false}
+        spaceBetween={10}
+        slidesPerView={3}
+        watchSlidesProgress
+        touchRatio={0.2}
+        grabCursor={true}
+        slideToClickedSlide={true}
+        onSwiper={setThumbsSwiper}
+        modules={[Navigation, Thumbs, Controller]}
+        breakpoints={{
+          640: { slidesPerView: 4 },
+          1280: { slidesPerView: 6 },
+        }}
+      >
+        {galleryImages.map((image, index) => (
+          <SwiperSlide key={index}>
+            <img
+              src={image.file_url}
+              alt={`Thumbnail ${index + 1}`}
+              className="rounded-lg"
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
         </div>
+
         <div className="py-6 pb-16 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-center">
           <input
             type="text"

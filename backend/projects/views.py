@@ -22,7 +22,7 @@ class ProjectView(APIView):
 class ProjectMediaListView(APIView):
     def get(self, request):
         media = ProjectMedia.objects.all()
-        serializer = ProjectMediaSerializer(media, many=True)
+        serializer = ProjectMediaSerializer(media, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
