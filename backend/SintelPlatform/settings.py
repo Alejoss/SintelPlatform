@@ -31,16 +31,34 @@ DOCKER = True
 DJANGO_PRODUCTION = os.getenv('DJANGO_PRODUCTION', 'False') == 'True'
 print(f"DJANGO_PRODUCTION: {DJANGO_PRODUCTION}")
 
-ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://dashboard.sintel.alejandroveintimilla.com", "http://dashboard.sintel.alejandroveintimilla.com"]
+ALLOWED_HOSTS = [
+    'dashboard.sintel.alejandroveintimilla.com',
+    'office.sintel.alejandroveintimilla.com',
+    'sintel.alejandroveintimilla.com',
+    'www.sintel.alejandroveintimilla.com',
+    'localhost',
+]
+
+CSRF_TRUSTEDCSRF_TRUSTED_ORIGINS = [
+    "https://dashboard.sintel.alejandroveintimilla.com",
+    "http://dashboard.sintel.alejandroveintimilla.com",
+    "https://office.sintel.alejandroveintimilla.com",
+    "http://office.sintel.alejandroveintimilla.com",
+    "https://sintel.alejandroveintimilla.com",
+    "http://sintel.alejandroveintimilla.com",
+]
 
 # CORS_ALLOW_ALL_ORIGINS: True  # Change on production
 CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # Allow frontend running on localhost:3000
     'http://localhost:5173',
+    'https://dashboard.sintel.alejandroveintimilla.com',
+    'https://office.sintel.alejandroveintimilla.com',
+    'https://sintel.alejandroveintimilla.com',
+    'https://www.sintel.alejandroveintimilla.com',
 ]
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
