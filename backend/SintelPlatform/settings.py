@@ -37,6 +37,7 @@ ALLOWED_HOSTS = [
     'sintel.alejandroveintimilla.com',
     'www.sintel.alejandroveintimilla.com',
     'localhost',
+    '10.3.2.217'
 ]
 
 CSRF_TRUSTEDCSRF_TRUSTED_ORIGINS = [
