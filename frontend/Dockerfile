@@ -16,11 +16,8 @@ COPY . .
 # Make port 5173 available to the outside world
 EXPOSE 5173
 
-# Define environment variable for production
-ENV NODE_ENV=production
+# Define environment variable
+ENV NODE_ENV=development
 
-# Build the application and preview
-RUN npm run build
-
-# Run the app in preview mode when the container launches
-CMD ["npm", "run", "preview", "--", "--host"]
+# Run the app when the container launches using the Vite command with --host
+CMD ["npm", "run", "dev", "--", "--host"]
