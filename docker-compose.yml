@@ -16,7 +16,7 @@ services:
   sintel_frontend:
     build:
       context: ./frontend
-      dockerfile: frontend/Dockerfile.prod
+      dockerfile: Dockerfile.prod
     container_name: sintel_frontend
     ports:
       - "5173:5173"  # use port 5173 for React app
