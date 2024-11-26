@@ -16,13 +16,13 @@ services:
   sintel_frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: frontend/Dockerfile.prod
     container_name: sintel_frontend
     ports:
       - "5173:5173"  # use port 5173 for React app
     environment:
       - NODE_ENV=production
-    command: npm run build && npm run preview -- --host
+    command: npm run build
 
   landing_page:
     build:

@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 // Determine the base URL, with a fallback to localhost
-const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 console.log("import.meta.env.VITE_API_BASE_URL:", import.meta.env.VITE_API_BASE_URL);
 // Log the base URL for debugging purposes
 console.log("Axios Base URL:", baseURL);

@@ -28,7 +28,7 @@ services:
   sintel_frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: sintel_frontend
     volumes:
       - ./frontend:/app
