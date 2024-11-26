@@ -16,9 +16,5 @@ COPY . .
 # Make port 5173 available to the outside world
 EXPOSE 5173
 
-# Define the start command based on the environment
-ARG NODE_ENV
-ENV NODE_ENV=${NODE_ENV}
-
 # Run the app when the container launches using the Vite command with --host
 CMD ["npm", "run", "dev", "--", "--host"]
