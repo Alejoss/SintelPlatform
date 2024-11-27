@@ -40,7 +40,7 @@ ALLOWED_HOSTS = [
     '10.3.2.217'
 ]
 
-CSRF_TRUSTEDCSRF_TRUSTED_ORIGINS = [
+CSRF_TRUSTED_ORIGINS = [
     "https://dashboard.sintel.alejandroveintimilla.com",
     "http://dashboard.sintel.alejandroveintimilla.com",
     "https://office.sintel.alejandroveintimilla.com",
