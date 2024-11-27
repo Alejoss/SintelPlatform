@@ -26,9 +26,8 @@ SECRET_KEY = 'django-insecure-ka+#-_pxx6!abv!uv0ouc!)d=$-ur*v#cy2-d^mff&5)0&m7&!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 DOCKER = True
-# Comando para correr el docker compose en ambiente de desarrollo:
-# docker-compose -f docker-compose.dev.yml up --build
-DJANGO_PRODUCTION = os.getenv('DJANGO_PRODUCTION', 'False') == 'True'
+
+DJANGO_PRODUCTION = os.getenv('DJANGO_PRODUCTION', 'False') == 'True'  # For amazon S3
 print(f"DJANGO_PRODUCTION: {DJANGO_PRODUCTION}")
 
 ALLOWED_HOSTS = [
