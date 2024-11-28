@@ -53,7 +53,7 @@ const Transactions = () => {
                 </div>
                 <div className="bg-gray-600/90 rounded-xl p-3">
                     <p className="font-semibold">Beneficiario</p>
-                    <p>{formatAddress(transaction.sender.address)}
+                    <p>{formatAddress(transaction.recipient.address)}
                 </p>
             </div>
             <div className="bg-gray-600 rounded-xl p-3">
