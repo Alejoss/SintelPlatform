@@ -6,7 +6,7 @@ class Address(models.Model):
     user = models.ForeignKey(User, related_name='addresses', on_delete=models.CASCADE)
     address = models.CharField(max_length=64)  # Assuming SHA256 string length
     label = models.CharField(max_length=100, blank=True)
-    # TODO ADDRESS VALIDATION FIELD
+    # TODO ADDRESS VALIDATION
 
     def __str__(self):
         return f"{self.label} ({self.address}) - User: {self.user.username}"
@@ -15,7 +15,6 @@ class Address(models.Model):
 class TokenBalance(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='token_balance')
     balance = models.DecimalField(max_digits=19, decimal_places=4)
-
 
     def __str__(self):
         return f"{self.user.username} - Balance: {self.balance}"

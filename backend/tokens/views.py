@@ -34,4 +34,5 @@ class UserTransactionsView(APIView):
             Q(sender__in=address_ids) | Q(recipient__in=address_ids)
         ).order_by('-timestamp')
         serializer = TokenTransactionSerializer(transactions, many=True)
+        print(f"serializer.data: {serializer.data}")
         return Response(serializer.data, status=status.HTTP_200_OK)
