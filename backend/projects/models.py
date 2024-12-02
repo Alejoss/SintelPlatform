@@ -8,6 +8,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
     def save(self, *args, **kwargs):
         if Project.objects.exists() and not self.pk:
             # If any instance exists, and we're trying to create another one, raise an exception
