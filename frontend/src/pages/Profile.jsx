@@ -1,4 +1,4 @@
-export default function Tab3() {
+export default function Profile() {
   return (
     <div className="px-6 bg-gray-800 text-stone-300 w-full md:p-12 md:mx-auto md:max-w-6xl xl:px-20">
       <div className="py-8 space-y-6 md:flex md:space-y-0 md:gap-4 w-full">

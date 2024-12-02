@@ -47,13 +47,13 @@ const handleLogout = () => {
         </button>
         <ul className={`${isOpen ? "block" : "hidden"} text-4xl space-y-14 pt-8 pl-4 md:flex md:flex-col md:pl-0 md:text-3xl md:space-y-12`}>
           <li className="w-fit hover:scale-125 hover:underline hover:underline-offset-8 transition-all duration-500">
-            <Link to="/tab1" className="text-white cursor-pointer" onClick={closeNavbar}>Balance</Link>
+            <Link to="/balance" className="text-white cursor-pointer" onClick={closeNavbar}>Balance</Link>
           </li>
           <li className="w-fit hover:scale-125 hover:underline hover:underline-offset-8 transition-all duration-500">
-            <Link to="/tab2" className="text-white cursor-pointer" onClick={closeNavbar}>Proyecto</Link>
+            <Link to="/project" className="text-white cursor-pointer" onClick={closeNavbar}>Proyecto</Link>
           </li>
           <li className="w-fit hover:scale-125 hover:underline hover:underline-offset-8 transition-all duration-500">
-            <Link to="/tab3" className="text-white cursor-pointer" onClick={closeNavbar}>Seguridad</Link>
+            <Link to="/profile" className="text-white cursor-pointer" onClick={closeNavbar}>Seguridad</Link>
           </li>
           <li className="w-fit hover:scale-125 hover:underline hover:underline-offset-8 transition-all duration-500">
             <Link to="/login" className="text-white cursor-pointer" onClick={closeNavbar}>Login</Link>

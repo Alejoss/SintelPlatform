@@ -7,7 +7,7 @@ class Project(models.Model):
     completion_percentage = models.IntegerField(default=0)  # Represents 0% to 100%
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    note = models.TextField()
 
     def save(self, *args, **kwargs):
         if Project.objects.exists() and not self.pk:

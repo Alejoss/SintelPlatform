@@ -3,7 +3,7 @@ import metamask from "../assets/MetaMask-Logo.png";
 import Transactions from "../components/Transactions";
 import axios from "../axiosConfig";
 
-export default function Tab1() {
+export default function Balance() {
   const [projectData, setProjectData] = useState({
     title: "",
     description: "",

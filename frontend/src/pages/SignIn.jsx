@@ -26,7 +26,7 @@ export default function SignIn() {
       .then((isAuthenticated) => {
         if (isAuthenticated) {
           console.log("User is already authenticated, redirecting...");
-          navigate("/tab1");
+          navigate("/balance");
         }
       })
       .catch((error) => {
@@ -42,7 +42,7 @@ export default function SignIn() {
     try {
       const response = await axios.post("/login/", { username, password });
       console.log("Login successful:", response.data);
-      navigate("/tab1");
+      navigate("/balance/");
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.error

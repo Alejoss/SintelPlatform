@@ -15,13 +15,14 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
-export default function Tab2() {
+export default function Project() {
   const [thumbsSwiper, setThumbsSwiper] = useState();
   const [firstSwiper, setFirstSwiper] = useState();
   const [secondSwiper, setSecondSwiper] = useState();
   const swiper1Ref = useRef(null);
   const swiper2Ref = useRef();
   const [galleryImages, setGalleryImages] = useState([]);
+  const [projectNote, setProjectNote] = useState("");
 
   useLayoutEffect(() => {
     if (swiper1Ref.current !== null) {
@@ -40,6 +41,16 @@ export default function Tab2() {
       .catch(error => {
         console.error("Failed to fetch gallery images:", error);
       });
+
+    // Fetch project data from the API to get the note
+    axios.get("/project/") // Replace with the actual endpoint for fetching project details
+      .then(response => {
+        console.log("PROJECT DATA RESPONSE:", response.data);
+        setProjectNote(response.data.note); // Assuming the response contains a 'note' field
+      })
+      .catch(error => {
+        console.error("Failed to fetch project data:", error);
+      });
   }, []);
 
   return (
@@ -48,22 +59,16 @@ export default function Tab2() {
         <div className="text-center py-8">
           <h1 className="text-3xl md:text-4xl">Project Title</h1>
         </div>
-        <div className="">
-          <p className="text-lg md:text-xl">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Amet
-            repudiandae illum a, aperiam accusamus explicabo ut quia maiores
-            tenetur, ad nisi iure, expedita velit ea dolorum. Blanditiis
-            perspiciatis in nemo? Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Soluta eius, optio adipisci architecto natus aut
-            quod laudantium mollitia. A magni corrupti modi eaque distinctio
-            corporis consequuntur ex cum aliquam quisquam.
-          </p>
-        </div>
+          <div className="">
+              <p className="text-lg md:text-xl">
+                  {projectNote || "Loading project note..."} {/* Display the project note */}
+              </p>
+          </div>
 
-        <div className="py-6 space-y-6">
-          <h1 className="text-3xl text-center md:text-4xl">Gallery</h1>
+          <div className="py-6 space-y-6">
+              <h1 className="text-3xl text-center md:text-4xl">Gallery</h1>
 
-      {/* Swiper to display gallery images */}
+              {/* Swiper to display gallery images */}
       <Swiper
         onSwiper={(swiper) => {
           if (swiper1Ref.current !== null) {
