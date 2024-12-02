@@ -193,7 +193,7 @@ export default function Home() {
                     transition={{ duration: 0.5, staggerChildren: 0.2 }}
                 >
                     <motion.h1 className="heading-master" variants={fadeInUp}>
-                        Expertos en tokenizacion
+                        Expertos en Tokenización
                     </motion.h1>
                     <motion.p className="body-large" variants={fadeInUp}>
                         Convierta sus activos en tokens digitales, acceda a
