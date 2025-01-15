@@ -1,10 +1,9 @@
+from web3 import Web3
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-
-from django.shortcuts import get_object_or_404
-from django.db.models import Q
 
 from .models import TokenBalance, TokenTransaction, Address
 from .serializers import TokenBalanceSerializer, TokenTransactionSerializer
@@ -31,13 +30,26 @@ class UserTokenBalance(APIView):
 
 class UserTransactionsView(APIView):
     def get(self, request):
+        infura_project_id = "db26d321185243db9d29d384b55dba3c"
         user = request.user
+        # Connect to Ethereum node
+        infura_url = "https://mainnet.infura.io/v3/{}".format(infura_project_id)
+        web3 = Web3(Web3.HTTPProvider(infura_url))
+
+        if not web3.isConnected():
+            return Response({"error": "Failed to connect to Ethereum network"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         # Retrieve all address IDs associated with the user
         address_ids = Address.objects.filter(user=user).values_list('id', flat=True)
-        # Filter transactions where the user's addresses are either sender or recipient
-        transactions = TokenTransaction.objects.filter(
-            Q(sender__in=address_ids) | Q(recipient__in=address_ids)
-        ).order_by('-timestamp')
+        addresses = Address.objects.filter(id__in=address_ids).values_list('address', flat=True)
+
+        transactions = []
+        for address in addresses:
+            # Fetch transactions for each address
+            txs = web3.eth.get_transaction_by_address(address)
+            transactions.extend(txs)
+
+        # Serialize and return the transactions
         serializer = TokenTransactionSerializer(transactions, many=True)
-        print(f"serializer.data: {serializer.data}")
+
         return Response(serializer.data, status=status.HTTP_200_OK)
