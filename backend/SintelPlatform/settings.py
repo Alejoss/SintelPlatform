@@ -35,6 +35,7 @@ ALLOWED_HOSTS = [
     'office.sintel.alejandroveintimilla.com',
     'sintel.alejandroveintimilla.com',
     'www.sintel.alejandroveintimilla.com',
+    'http://sintel.algobeat.com',
     'localhost',
     '10.3.2.217'
 ]
@@ -46,6 +47,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://office.sintel.alejandroveintimilla.com",
     "https://sintel.alejandroveintimilla.com",
     "http://sintel.alejandroveintimilla.com",
+    'http://sintel.algobeat.com'
 ]
 
 # CORS_ALLOW_ALL_ORIGINS: True  # Change on production
@@ -58,6 +60,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://office.sintel.alejandroveintimilla.com',
     'https://sintel.alejandroveintimilla.com',
     'https://www.sintel.alejandroveintimilla.com',
+    'http://sintel.algobeat.com'
 ]
 
 INSTALLED_APPS = [
